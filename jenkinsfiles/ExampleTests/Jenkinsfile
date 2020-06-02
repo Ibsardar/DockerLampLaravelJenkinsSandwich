@@ -15,7 +15,7 @@ pipeline {
             steps {
                 echo 'Building...'
                 sh 'docker-compose -v'
-                sh "echo Today's date is: && date"
+                sh 'echo Today the date is: && date'
             }
         }
         stage('s-test') {
