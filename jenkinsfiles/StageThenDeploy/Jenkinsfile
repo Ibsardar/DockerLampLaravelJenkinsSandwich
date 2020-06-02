@@ -1,0 +1,65 @@
+Jenkinsfile (Declarative Pipeline)
+pipeline {
+
+    options { disableConcurrentBuilds() }
+    
+    agent { any }
+
+    stages {
+        stage('merge') {
+            steps {
+                echo 'Merging development into staging branch...'
+            }
+        }
+        stage('build') {
+            steps {
+                echo 'Building...'
+            }
+        }
+        stage('s-test') {
+            steps {
+                echo 'Stage (pre-deployment) testing...'
+            }
+        }
+        stage('confirm-deployment') {
+            steps {
+                input 'Ready to deploy. Confirm carefully then press any key.'
+                mail to: 'ibrysar@gmail.com',
+                     subject: "Ready to Deploy: ${currentBuild.fullDisplayName}",
+                     body: "Pipeline instance for ${env.BUILD_URL} has completed staging successfully and is awaiting your confirmation to deploy."
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo 'Deploying...'
+            }
+        }
+        stage('clean') {
+            steps {
+                echo 'Cleaning up...'
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo 'Ran.'
+            deleteDir() /* clean up our workspace */
+        }
+        success {
+            echo 'Passed.'
+        }
+        failure {
+            echo 'Failed.'
+            mail to: 'ibrysar@gmail.com',
+                 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+                 body: "Something went wrong with ${env.BUILD_URL}"
+        }
+        unstable {
+            echo 'Ran Unstabley.'
+        }
+        changed {
+            echo 'Changed.'
+        }
+    }
+}

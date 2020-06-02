@@ -1,0 +1,40 @@
+First of All...
+  Users are expected to use developement branch for developement,
+  then submit pull-requests ONLY into the integrate branch
+
+TestThenIntegrate:
+  When users upload to github integrate branch,
+  one by one,
+  run continuous tests,
+  if passed, merge changes into integrate and also into developement,
+  if failed, report failures,
+  END
+
+<TestType>Tests:
+  When admin(s) runs pipeline(s) from Jenkins UI,
+  one by one,
+  merge developement branch into staging branch,
+  run tests,
+  report,
+  END
+
+StageThenDeploy:
+  When admin(s) runs pipeline from Jenkins UI,
+  one by one,
+  merge developement branch into staging branch,
+  run staging tests,
+  if passed, merge staging branch into master,
+  if failed, report failures,
+  END
+
+TestThenIntegrateThenStageThenDeploy:
+  When users upload to github integrate branch,
+  one by one,
+  run continuous tests,
+  if passed, merge changes into integrate and also into developement,
+  if failed, report failures and END
+  merge developement branch into staging branch,
+  run staging tests,
+  if passed, merge staging branch into master,
+  if failed, report failures,
+  END
