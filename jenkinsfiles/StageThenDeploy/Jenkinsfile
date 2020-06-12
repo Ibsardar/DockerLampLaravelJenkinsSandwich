@@ -29,6 +29,11 @@ pipeline {
                 //     body: "Pipeline instance for ${env.BUILD_URL} has completed staging successfully and is awaiting your confirmation to deploy."
             }
         }
+        stage('produce') {
+            steps {
+                echo 'Merging staging branch into master branch...'
+            }
+        }
         stage('deploy') {
             steps {
                 echo 'Deploying...'

@@ -13,6 +13,7 @@ pipeline {
         stage('build') {
             steps {
                 echo 'Building...'
+                sh 'docker-compose up'
             }
         }
         stage('c-test') {
@@ -38,6 +39,11 @@ pipeline {
                 //mail to: 'ibrysar@gmail.com',
                 //     subject: "Ready to Deploy: ${currentBuild.fullDisplayName}",
                 //     body: "Pipeline instance for ${env.BUILD_URL} has completed staging successfully and is awaiting your confirmation to deploy."
+            }
+        }
+        stage('produce') {
+            steps {
+                echo 'Merging staging branch into master branch...'
             }
         }
         stage('deploy') {
